@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp">
+
+        <Button
+            android:id="@+id/rgb2GrayBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="rgb2Gray"
+            android:text="RGB2Gray" />
+
+        <Button
+            android:id="@+id/scaleBrightnessBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="scaleBrightness"
+            android:text="Scale Brightness" />
+
+        <Button
+            android:id="@+id/gammaContrastAdjustmentBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="adjustGammaContrast"
+            android:text="Contrast Adjustment" />
+
+        <Button
+            android:id="@+id/subtractionBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scaleBrightnessBtn"
+            android:onClick="subtractImages"
+            android:text="Image Subtraction"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbarStyle="insideOverlay">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/inputImg"
+                android:layout_width="480dp"
+                android:layout_height="270dp"
+                android:src="@drawable/vid74" />
+
+            <ImageView
+                android:id="@+id/inputImg1"
+                android:layout_width="480dp"
+                android:layout_height="270dp"
+                android:src="@drawable/vid75"/>
+
+            <ImageView
+                android:id="@+id/outputImg"
+                android:layout_width="480dp"
+                android:layout_height="270dp" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
