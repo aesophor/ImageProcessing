@@ -179,4 +179,33 @@ public class MainActivity extends AppCompatActivity {
         Histogram(bmp2, iv4);
     }
 
+    public void b3_Click(View view) {
+        iv2 = (ImageView) findViewById(R.id.inputImg1);
+        BitmapDrawable abmp = (BitmapDrawable) iv2.getDrawable();
+        bmp2 = abmp.getBitmap();
+
+        iv3 = (ImageView) findViewById(R.id.outputImg);
+        iv4 = (ImageView) findViewById(R.id.outputImg1);
+
+        Mat sImage = new Mat();
+        Utils.bitmapToMat(bmp2, sImage);
+        Mat grayImage = new Mat();
+        Imgproc.cvtColor(sImage, grayImage, Imgproc.COLOR_RGB2GRAY);
+        displayMatImage(grayImage, iv3);
+
+        Mat eqGS = new Mat();
+        Imgproc.equalizeHist(grayImage, eqGS);
+        displayMatImage(eqGS, iv4);
+
+        eqGS.release();
+        grayImage.release();
+        sImage.release();
+    }
+
+    private void displayMatImage(Mat image, ImageView iv) {
+        Bitmap bitmap = Bitmap.createBitmap(image.cols(), image.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(image, bitmap);
+        iv.setImageBitmap(bitmap);
+    }
+
 }
