@@ -1,6 +1,7 @@
 package com.example.aesophor.imagehistogram;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -200,6 +201,139 @@ public class MainActivity extends AppCompatActivity {
         eqGS.release();
         grayImage.release();
         sImage.release();
+    }
+
+    public void b4_Click(View view) {
+        iv2 = (ImageView) findViewById(R.id.inputImg1);
+        BitmapDrawable abmp = (BitmapDrawable) iv2.getDrawable();
+        bmp2 = abmp.getBitmap();
+
+        iv4 = (ImageView) findViewById(R.id.outputImg1);
+
+        Mat colorImage = new Mat();
+        Utils.bitmapToMat(bmp2, colorImage);
+
+        Mat v = new Mat(colorImage.rows(), colorImage.cols(), CvType.CV_8UC1);
+        Mat s = new Mat(colorImage.rows(), colorImage.cols(), CvType.CV_8UC1);
+        Mat hsv = new Mat();
+        Imgproc.cvtColor(colorImage, hsv, Imgproc.COLOR_RGB2HSV);
+
+
+        byte[] vs = new byte[3];
+        byte[] vsOut = new byte[1];
+        byte[] ssOut = new byte[1];
+        for (int i = 0; i < hsv.rows(); i++) {
+            for (int j = 0; j < hsv.cols(); j++) {
+                hsv.get(i, j, vs);
+                v.put(i, j, new byte[] { vs[2] });
+                s.put(i, j, new byte[] { vs[1] });
+            }
+        }
+
+        Imgproc.equalizeHist(v, v);
+        Imgproc.equalizeHist(s, s);
+        for (int i = 0; i < hsv.rows(); i++) {
+            for (int j = 0; j < hsv.cols(); j++) {
+                v.get(i, j, vsOut);
+                s.get(i, j, ssOut);
+                hsv.get(i, j, vs);
+                vs[2] = vsOut[0];
+                vs[1] = ssOut[0];
+                hsv.put(i, j, vs);
+            }
+        }
+
+        Mat enhancedImage = new Mat();
+        Imgproc.cvtColor(hsv, enhancedImage, Imgproc.COLOR_HSV2RGB);
+        displayMatImage(enhancedImage, iv4);
+    }
+
+    public void b5_Click(View view) {
+        iv1 = (ImageView) findViewById(R.id.inputImg);
+        BitmapDrawable abmp = (BitmapDrawable) iv1.getDrawable();
+        bmp1 = abmp.getBitmap();
+
+        iv3 = (ImageView) findViewById(R.id.outputImg);
+
+        Bitmap rgbHE = yuvHE(bmp1);
+        iv3.setImageBitmap(rgbHE);
+    }
+
+    private Bitmap yuvHE(Bitmap src) {
+        int width = src.getWidth();
+        int height = src.getHeight();
+        Bitmap processedImage = Bitmap.createBitmap(width, height, src.getConfig());
+
+        int a = 0, r, g, b;
+        int pixel;
+
+        float[][] Y = new float[width][height];
+        float[][] U = new float[width][height];
+        float[][] V = new float[width][height];
+        int[] histogram = new int[256];
+        Arrays.fill(histogram, 0);
+
+        int[] cdf = new int[256];
+        Arrays.fill(cdf, 0);
+        float min = 257;
+        float max = 0;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                pixel = src.getPixel(x, y);
+                a = Color.alpha(pixel);
+                r = Color.red(pixel);
+                g = Color.green(pixel);
+                b = Color.blue(pixel);
+
+                Y[x][y] = .299f * r + .587f * g + .114f * b;
+                U[x][y] = .565f * (b - Y[x][y]);
+                V[x][y] = .713f * (r - Y[x][y]);
+
+                histogram[(int) Y[x][y]] += 1;
+                if (Y[x][y] < min) {
+                    min = Y[x][y];
+                }
+                if (Y[x][y] > max) {
+                    max = Y[x][y];
+                }
+            }
+        }
+
+        cdf[0] = histogram[0];
+        for (int i = 1; i <= 255; i++) {
+            cdf[i] = cdf[i - 1] + histogram[i];
+        }
+
+        float minCDF = cdf[(int) min];
+        float denominator = width * height - minCDF;
+        float value;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                pixel = src.getPixel(x, y);
+                a = Color.alpha(pixel);
+                Y[x][y] = ((cdf[(int) Y[x][y]] - minCDF) / denominator) * 255;
+
+                value = Y[x][y] + 1.403f * V[x][y];
+                if (value < 0.0) r = 0;
+                else if (value > 255.0) r = 255;
+                else r = (int) value;
+
+                value = Y[x][y] - 0.344f * U[x][y] - 0.714f * V[x][y];
+                if (value < 0.0) g = 0;
+                else if (value > 255.0) g = 255;
+                else g = (int) value;
+
+                value = Y[x][y] + 1.77f * U[x][y];
+                if (value < 0.0) b = 0;
+                else if (value > 255.0) b = 255;
+                else b = (int) value;
+
+                processedImage.setPixel(x, y, Color.argb(a, r, g, b));
+            }
+        }
+
+        return processedImage;
     }
 
     private void displayMatImage(Mat image, ImageView iv) {

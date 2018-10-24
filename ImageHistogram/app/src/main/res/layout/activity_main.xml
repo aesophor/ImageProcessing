@@ -29,8 +29,21 @@
             android:layout_below="@+id/button2"
             android:onClick="b3_Click"
             android:text="Gray_HE"/>
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button3"
+            android:onClick="b4_Click"
+            android:text="HSV_HE"/>
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button4"
+            android:onClick="b5_Click"
+            android:text="YUV_HE"/>
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
