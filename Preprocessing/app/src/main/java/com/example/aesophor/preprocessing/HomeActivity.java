@@ -21,7 +21,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.putExtra("ACTION_MODE", GAUSSIAN_BLUR);
+                i.putExtra("ACTION_MODE", MEAN_BLUR);
                 startActivity(i);
             }
         });
