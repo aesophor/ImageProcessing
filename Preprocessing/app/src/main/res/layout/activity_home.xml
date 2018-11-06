@@ -21,7 +21,25 @@
             android:id="@+id/bGaussian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/menu_gaussian_blur"/>
+            android:text="@string/menu_gaussian_blur" />
+
+        <Button
+            android:id="@+id/bMedian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_median_blur" />
+
+        <Button
+            android:id="@+id/bSharpen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_sharpen" />
+
+        <Button
+            android:id="@+id/bThreshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_threshold" />
 
     </LinearLayout>
 </ScrollView>

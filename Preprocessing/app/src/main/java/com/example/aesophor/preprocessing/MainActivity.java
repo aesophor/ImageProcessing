@@ -128,8 +128,23 @@ public class MainActivity extends AppCompatActivity {
                             case HomeActivity.MEAN_BLUR:
                                 Imgproc.blur(src, src, new Size(9, 9));
                                 break;
+                            case HomeActivity.MEDIAN_BLUR:
+                                Imgproc.medianBlur(src, src, 9);
+                                break;
                             case HomeActivity.GAUSSIAN_BLUR:
                                 Imgproc.GaussianBlur(src, src, new Size(29, 29), 0);
+                                break;
+                            case HomeActivity.SHARPEN:
+                                Mat kernel = new Mat(3, 3, CvType.CV_16SC1);
+                                Log.d("imageType", CvType.typeToString(src.type()));
+                                kernel.put(0, 0, 0, -1, 0, -1, 5, -1, 0, -1, 0);
+                                Imgproc.filter2D(src, src, src_gray.depth(), kernel);
+                                break;
+                            case HomeActivity.THRESHOLD:
+                                Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
+                                Mat bin = new Mat(src_gray.rows(), src_gray.cols(), CvType.CV_8UC1);
+                                Imgproc.threshold(src_gray, bin, 120, 255, Imgproc.THRESH_BINARY);
+                                Imgproc.cvtColor(bin, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 break;
                         }
 
