@@ -41,5 +41,11 @@
             android:layout_height="wrap_content"
             android:text="@string/menu_threshold" />
 
+        <Button
+            android:id="@+id/bAdaptiveThreshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_adaptive_threshold"/>
+
     </LinearLayout>
 </ScrollView>

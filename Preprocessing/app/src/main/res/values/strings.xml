@@ -7,4 +7,5 @@
     <string name="menu_median_blur">Median Blur</string>
     <string name="menu_sharpen">Sharpen</string>
     <string name="menu_threshold">Threshold</string>
+    <string name="menu_adaptive_threshold">Adaptive Threshold</string>
 </resources>
