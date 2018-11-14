@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case HomeActivity.ADAPTIVE_THRESHOLD:
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
-                                Imgproc.adaptiveThreshold(src_gray, src_gray, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 3, 0);
+                                Imgproc.adaptiveThreshold(src_gray, src_gray, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 45, 0);
                                 Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 break;
                             case HomeActivity.OTSU_THRESHOLD:
