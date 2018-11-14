@@ -15,13 +15,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="b1_Click"
-            android:text="ImageHistogram1"/>
+            android:text="Histogram1"/>
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="b2_Click"
-            android:text="ImageHistogram2"/>
+            android:text="Histogram2"/>
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
@@ -43,6 +43,19 @@
             android:layout_below="@+id/button4"
             android:onClick="b5_Click"
             android:text="YUV_HE"/>
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button5"
+            android:onClick="b6_Click"
+            android:text="Otsu"/>
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button6"
+            android:text="Threshold Value = "/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"

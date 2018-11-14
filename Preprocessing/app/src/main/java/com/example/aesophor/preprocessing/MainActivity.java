@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
@@ -150,6 +151,12 @@ public class MainActivity extends AppCompatActivity {
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
                                 Imgproc.adaptiveThreshold(src_gray, src_gray, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 3, 0);
                                 Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
+                                break;
+                            case HomeActivity.OTSU_THRESHOLD:
+                                Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
+                                double threshold = Imgproc.threshold(src_gray, src_gray, 0, 255, Imgproc.THRESH_OTSU);
+                                Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
+                                ((TextView) findViewById(R.id.textView1)).setText("Threshold Value = " + threshold);
                                 break;
                         }
 

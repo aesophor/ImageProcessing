@@ -47,5 +47,11 @@
             android:layout_height="wrap_content"
             android:text="@string/menu_adaptive_threshold"/>
 
+        <Button
+            android:id="@+id/bOtsuThreshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_otsu_threshold" />
+
     </LinearLayout>
 </ScrollView>

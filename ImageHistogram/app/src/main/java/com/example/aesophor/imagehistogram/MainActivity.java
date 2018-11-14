@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.OpenCVLoader;
@@ -259,6 +260,18 @@ public class MainActivity extends AppCompatActivity {
         iv3.setImageBitmap(rgbHE);
     }
 
+    public void b6_Click(View view) {
+        iv1 = (ImageView) findViewById(R.id.inputImg);
+        BitmapDrawable abmp = (BitmapDrawable) iv1.getDrawable();
+        bmp1 = abmp.getBitmap();
+        iv2 = (ImageView) findViewById(R.id.outputImg);
+
+        Bitmap thrBmp = Otsu(bmp1);
+
+        iv2.setImageBitmap(thrBmp);
+        iv2.invalidate();
+    }
+
     private Bitmap yuvHE(Bitmap src) {
         int width = src.getWidth();
         int height = src.getHeight();
@@ -340,6 +353,29 @@ public class MainActivity extends AppCompatActivity {
         Bitmap bitmap = Bitmap.createBitmap(image.cols(), image.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(image, bitmap);
         iv.setImageBitmap(bitmap);
+    }
+
+    private Bitmap Otsu(Bitmap bmpid) {
+        bmp2 = Bitmap.createBitmap(bmpid.getWidth(), bmpid.getHeight(), bmpid.getConfig());
+        int imgH = bmp2.getHeight();
+        int imgW = bmp2.getWidth();
+        Mat rgba = new Mat(imgH, imgW, CvType.CV_8UC1);
+        Mat gray = new Mat(imgH, imgW, CvType.CV_8UC1);
+        Mat bin = new Mat(imgH, imgW, CvType.CV_8UC1);
+        Utils.bitmapToMat(bmpid, rgba);
+
+        Imgproc.cvtColor(rgba, gray, Imgproc.COLOR_BGR2GRAY);
+        double threshold = Imgproc.threshold(gray, bin, 0, 255, Imgproc.THRESH_OTSU);
+        ((TextView) findViewById(R.id.textView1)).setText("Threshold value = " + threshold);
+
+        try {
+            bmp2 = Bitmap.createBitmap(rgba.cols(), rgba.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(bin, bmp2);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return bmp2;
     }
 
 }

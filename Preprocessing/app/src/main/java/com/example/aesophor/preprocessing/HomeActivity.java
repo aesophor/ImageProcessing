@@ -14,6 +14,7 @@ public class HomeActivity extends AppCompatActivity {
     public static final int SHARPEN = 4;
     public static final int THRESHOLD = 5;
     public static final int ADAPTIVE_THRESHOLD = 6;
+    public static final int OTSU_THRESHOLD = 7;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,16 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.putExtra("ACTION_MODE", ADAPTIVE_THRESHOLD);
+                startActivity(i);
+            }
+        });
+
+        Button bOtsuThreshold = (Button) findViewById(R.id.bOtsuThreshold);
+        bOtsuThreshold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.putExtra("ACTION_MODE", OTSU_THRESHOLD);
                 startActivity(i);
             }
         });
