@@ -15,6 +15,7 @@ public class HomeActivity extends AppCompatActivity {
     public static final int THRESHOLD = 5;
     public static final int ADAPTIVE_THRESHOLD = 6;
     public static final int OTSU_THRESHOLD = 7;
+    public static final int REGION_LABELING = 8;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,16 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.putExtra("ACTION_MODE", OTSU_THRESHOLD);
+                startActivity(i);
+            }
+        });
+
+        Button bRegionLabeling = (Button) findViewById(R.id.bRegionLabeling);
+        bRegionLabeling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.putExtra("ACTION_MODE", REGION_LABELING);
                 startActivity(i);
             }
         });

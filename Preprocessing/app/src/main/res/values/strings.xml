@@ -8,5 +8,6 @@
     <string name="menu_sharpen">Sharpen</string>
     <string name="menu_threshold">Threshold</string>
     <string name="menu_adaptive_threshold">Adaptive Threshold</string>
-    <string name="menu_otsu_threshold">Otsu Threshold</string>string>
+    <string name="menu_otsu_threshold">Otsu Threshold</string>
+    <string name="menu_region_labeling">Region Labeling</string>
 </resources>

@@ -23,11 +23,17 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -157,6 +163,21 @@ public class MainActivity extends AppCompatActivity {
                                 double threshold = Imgproc.threshold(src_gray, src_gray, 0, 255, Imgproc.THRESH_OTSU);
                                 Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 ((TextView) findViewById(R.id.textView1)).setText("Threshold Value = " + threshold);
+                                break;
+                            case HomeActivity.REGION_LABELING:
+                                Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
+                                Mat bin1 = new Mat(src_gray.rows(), src_gray.cols(), CvType.CV_8UC1);
+                                Imgproc.threshold(src_gray, bin1, 111, 255, Imgproc.THRESH_BINARY_INV);
+
+                                // Find contours.
+                                List<MatOfPoint> contourListTemp = new ArrayList<>();
+                                Mat hierarchy = new Mat();
+                                Imgproc.findContours(bin1, contourListTemp, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+                                for (int idx = 0; idx >= 0; idx = (int) hierarchy.get(0, idx)[0]) {
+                                    MatOfPoint matOfPoint = contourListTemp.get(idx);
+                                    Rect rect = Imgproc.boundingRect(matOfPoint);
+                                    Imgproc.rectangle(src, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0, 255), 5);
+                                }
                                 break;
                         }
 

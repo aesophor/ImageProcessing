@@ -53,5 +53,11 @@
             android:layout_height="wrap_content"
             android:text="@string/menu_otsu_threshold" />
 
+        <Button
+            android:id="@+id/bRegionLabeling"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_region_labeling" />
+
     </LinearLayout>
 </ScrollView>

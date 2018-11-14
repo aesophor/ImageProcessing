@@ -3,6 +3,7 @@ package com.example.aesophor.imagehistogram;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,12 +19,16 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.MatOfInt;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -272,6 +277,18 @@ public class MainActivity extends AppCompatActivity {
         iv2.invalidate();
     }
 
+    public void b7_Click(View view) {
+        iv1 = (ImageView) findViewById(R.id.inputImg);
+        BitmapDrawable abmp = (BitmapDrawable) iv1.getDrawable();
+        bmp1 = abmp.getBitmap();
+        iv2 = (ImageView) findViewById(R.id.outputImg);
+
+        Bitmap regBmp = RegionLabeling(bmp1);
+
+        iv1.setImageBitmap(regBmp);
+        iv1.invalidate();
+    }
+
     private Bitmap yuvHE(Bitmap src) {
         int width = src.getWidth();
         int height = src.getHeight();
@@ -371,6 +388,37 @@ public class MainActivity extends AppCompatActivity {
         try {
             bmp2 = Bitmap.createBitmap(rgba.cols(), rgba.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(bin, bmp2);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return bmp2;
+    }
+
+    private Bitmap RegionLabeling(Bitmap bmp) {
+        bmp2 = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
+        int imgH = bmp2.getHeight();
+        int imgW = bmp2.getWidth();
+
+        Mat rgba = new Mat(imgH, imgW, CvType.CV_8UC1);
+        Utils.bitmapToMat(bmp, rgba);
+        Mat gray = new Mat(imgH, imgW, CvType.CV_8UC1);
+        Imgproc.cvtColor(rgba, gray, Imgproc.COLOR_BGR2GRAY);
+        Mat bin = new Mat(imgH, imgW, CvType.CV_8UC1);
+        Imgproc.threshold(gray, bin, 111, 255, Imgproc.THRESH_BINARY_INV);
+
+        List<MatOfPoint> contourListTemp = new ArrayList<>();
+        Mat hierarchy = new Mat();
+        Imgproc.findContours(bin, contourListTemp, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        for (int idx = 0; idx >= 0; idx = (int) hierarchy.get(0, idx)[0]) {
+            MatOfPoint matOfPoint = contourListTemp.get(idx);
+            Rect rect = Imgproc.boundingRect(matOfPoint);
+            Imgproc.rectangle(rgba, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0, 255), 5);
+        }
+
+        try {
+            bmp2 = Bitmap.createBitmap(rgba.cols(), rgba.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(rgba, bmp2);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
