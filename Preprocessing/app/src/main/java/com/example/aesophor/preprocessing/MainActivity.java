@@ -131,39 +131,47 @@ public class MainActivity extends AppCompatActivity {
                         src = new Mat(selectedImage.getHeight(), selectedImage.getWidth(), CvType.CV_8UC4);
                         Utils.bitmapToMat(selectedImage, src);
                         src_gray = new Mat(selectedImage.getHeight(), selectedImage.getWidth(), CvType.CV_8UC1);
+
                         switch (ACTION_MODE) {
                             case HomeActivity.MEAN_BLUR:
                                 Imgproc.blur(src, src, new Size(9, 9));
                                 break;
+
                             case HomeActivity.MEDIAN_BLUR:
                                 Imgproc.medianBlur(src, src, 9);
                                 break;
+
                             case HomeActivity.GAUSSIAN_BLUR:
                                 Imgproc.GaussianBlur(src, src, new Size(29, 29), 0);
                                 break;
+
                             case HomeActivity.SHARPEN:
                                 Mat kernel = new Mat(3, 3, CvType.CV_16SC1);
                                 Log.d("imageType", CvType.typeToString(src.type()));
                                 kernel.put(0, 0, 0, -1, 0, -1, 5, -1, 0, -1, 0);
                                 Imgproc.filter2D(src, src, src_gray.depth(), kernel);
                                 break;
+
                             case HomeActivity.THRESHOLD:
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
                                 Mat bin = new Mat(src_gray.rows(), src_gray.cols(), CvType.CV_8UC1);
                                 Imgproc.threshold(src_gray, bin, 120, 255, Imgproc.THRESH_BINARY);
                                 Imgproc.cvtColor(bin, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 break;
+
                             case HomeActivity.ADAPTIVE_THRESHOLD:
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
                                 Imgproc.adaptiveThreshold(src_gray, src_gray, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 45, 0);
                                 Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 break;
+
                             case HomeActivity.OTSU_THRESHOLD:
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
                                 double threshold = Imgproc.threshold(src_gray, src_gray, 0, 255, Imgproc.THRESH_OTSU);
                                 Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 ((TextView) findViewById(R.id.textView1)).setText("Threshold Value = " + threshold);
                                 break;
+
                             case HomeActivity.REGION_LABELING:
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
                                 Mat bin1 = new Mat(src_gray.rows(), src_gray.cols(), CvType.CV_8UC1);
@@ -180,11 +188,42 @@ public class MainActivity extends AppCompatActivity {
                                         Imgproc.rectangle(src, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0, 255), 5);
                                 }
                                 break;
+
                             case HomeActivity.DILATE:
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
-                                Imgproc.threshold(src_gray, src_gray, 100, 255, Imgproc.THRESH_BINARY);
-                                Mat kernelDilate = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+                                double thr = Imgproc.threshold(src_gray, src_gray, 0, 255, Imgproc.THRESH_OTSU);
+                                Mat kernelDilate = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
                                 Imgproc.dilate(src_gray, src_gray, kernelDilate);
+                                Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
+                                ((TextView) findViewById(R.id.textView1)).setText("Threshold Value = " + thr);
+                                break;
+
+                            case HomeActivity.ERODE:
+                                Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
+                                double t = Imgproc.threshold(src_gray, src_gray, 0, 255, Imgproc.THRESH_OTSU);
+                                Mat kernelErode = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(5, 5));
+                                Imgproc.erode(src_gray, src_gray, kernelErode);
+                                Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
+                                ((TextView) findViewById(R.id.textView1)).setText("Threshold Value = " + t);
+                                break;
+
+                            case HomeActivity.OPENING:
+                                Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
+                                Imgproc.threshold(src_gray, src_gray, 100, 255, Imgproc.THRESH_BINARY);
+                                Mat kernelErode0 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+                                Imgproc.erode(src_gray, src_gray, kernelErode0);
+                                Mat kernelDilate0 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+                                Imgproc.dilate(src_gray, src_gray, kernelDilate0);
+                                Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
+                                break;
+
+                            case HomeActivity.CLOSING:
+                                Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
+                                Imgproc.threshold(src_gray, src_gray, 110, 255, Imgproc.THRESH_BINARY);
+                                Mat kernelDilate1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+                                Imgproc.dilate(src_gray, src_gray, kernelDilate1);
+                                Mat kernelErode1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+                                Imgproc.erode(src_gray, src_gray, kernelErode1);
                                 Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 break;
                         }

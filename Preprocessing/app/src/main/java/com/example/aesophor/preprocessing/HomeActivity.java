@@ -17,6 +17,9 @@ public class HomeActivity extends AppCompatActivity {
     public static final int OTSU_THRESHOLD = 6;
     public static final int REGION_LABELING = 7;
     public static final int DILATE = 8;
+    public static final int ERODE = 9;
+    public static final int OPENING = 10;
+    public static final int CLOSING = 11;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +113,36 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.putExtra("ACTION_MODE", DILATE);
+                startActivity(i);
+            }
+        });
+
+        Button bErode = (Button) findViewById(R.id.bErode);
+        bErode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.putExtra("ACTION_MODE", ERODE);
+                startActivity(i);
+            }
+        });
+
+        Button bOpening = (Button) findViewById(R.id.bOpening);
+        bOpening.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.putExtra("ACTION_MODE", OPENING);
+                startActivity(i);
+            }
+        });
+
+        Button bClosing = (Button) findViewById(R.id.bClosing);
+        bClosing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.putExtra("ACTION_MODE", CLOSING);
                 startActivity(i);
             }
         });
