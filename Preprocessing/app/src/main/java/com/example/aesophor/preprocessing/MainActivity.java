@@ -176,8 +176,16 @@ public class MainActivity extends AppCompatActivity {
                                 for (int idx = 0; idx >= 0; idx = (int) hierarchy.get(0, idx)[0]) {
                                     MatOfPoint matOfPoint = contourListTemp.get(idx);
                                     Rect rect = Imgproc.boundingRect(matOfPoint);
-                                    Imgproc.rectangle(src, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0, 255), 5);
+                                    if (rect.width >= 10 && rect.height >= 10)
+                                        Imgproc.rectangle(src, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0, 255), 5);
                                 }
+                                break;
+                            case HomeActivity.DILATE:
+                                Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
+                                Imgproc.threshold(src_gray, src_gray, 100, 255, Imgproc.THRESH_BINARY);
+                                Mat kernelDilate = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+                                Imgproc.dilate(src_gray, src_gray, kernelDilate);
+                                Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 break;
                         }
 

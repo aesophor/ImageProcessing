@@ -59,5 +59,11 @@
             android:layout_height="wrap_content"
             android:text="@string/menu_region_labeling" />
 
+        <Button
+            android:id="@+id/bDilate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_dilate_image"/>
+
     </LinearLayout>
 </ScrollView>
