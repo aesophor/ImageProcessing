@@ -191,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
 
                             case HomeActivity.DILATE:
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
-                                double thr = Imgproc.threshold(src_gray, src_gray, 0, 255, Imgproc.THRESH_OTSU);
-                                Mat kernelDilate = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+                                double thr = Imgproc.threshold(src_gray, src_gray, 100, 255, Imgproc.THRESH_BINARY);
+                                Mat kernelDilate = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(1, 1));
                                 Imgproc.dilate(src_gray, src_gray, kernelDilate);
                                 Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 ((TextView) findViewById(R.id.textView1)).setText("Threshold Value = " + thr);
@@ -200,8 +200,8 @@ public class MainActivity extends AppCompatActivity {
 
                             case HomeActivity.ERODE:
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
-                                double t = Imgproc.threshold(src_gray, src_gray, 0, 255, Imgproc.THRESH_OTSU);
-                                Mat kernelErode = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(5, 5));
+                                double t = Imgproc.threshold(src_gray, src_gray, 100, 255, Imgproc.THRESH_BINARY);
+                                Mat kernelErode = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(4, 4));
                                 Imgproc.erode(src_gray, src_gray, kernelErode);
                                 Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 ((TextView) findViewById(R.id.textView1)).setText("Threshold Value = " + t);
@@ -210,9 +210,9 @@ public class MainActivity extends AppCompatActivity {
                             case HomeActivity.OPENING:
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
                                 Imgproc.threshold(src_gray, src_gray, 100, 255, Imgproc.THRESH_BINARY);
-                                Mat kernelErode0 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+                                Mat kernelErode0 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
                                 Imgproc.erode(src_gray, src_gray, kernelErode0);
-                                Mat kernelDilate0 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+                                Mat kernelDilate0 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2));
                                 Imgproc.dilate(src_gray, src_gray, kernelDilate0);
                                 Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 break;
@@ -220,9 +220,9 @@ public class MainActivity extends AppCompatActivity {
                             case HomeActivity.CLOSING:
                                 Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGR2GRAY);
                                 Imgproc.threshold(src_gray, src_gray, 110, 255, Imgproc.THRESH_BINARY);
-                                Mat kernelDilate1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+                                Mat kernelDilate1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2));
                                 Imgproc.dilate(src_gray, src_gray, kernelDilate1);
-                                Mat kernelErode1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+                                Mat kernelErode1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(4, 4));
                                 Imgproc.erode(src_gray, src_gray, kernelErode1);
                                 Imgproc.cvtColor(src_gray, src, Imgproc.COLOR_GRAY2RGBA, 4);
                                 break;
