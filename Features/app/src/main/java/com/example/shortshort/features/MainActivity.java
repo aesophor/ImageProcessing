@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.OpenCVLoader;
@@ -26,11 +27,16 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Mat originalMat, colorDrawMat;
     private Bitmap currentBitmap, processedBitmap;
-    private ImageView originalView, processedView;
+    private ImageView originalView, processedView, dogView1, dogView2;
     static int REQUEST_READ_EXTERNAL_STORAGE = 0;
     static boolean read_external_storage_granted = false;
     private final int ACTION_PICK_PHOTO = 1;
@@ -107,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         } else if (id == R.id.DoG) {
+            dogView1 = (ImageView) findViewById(R.id.dogImage1);
+            dogView2 = (ImageView) findViewById(R.id.dogImage2);
             processedView = (ImageView) findViewById(R.id.processedImage);
             differenceOfGaussian();
         }
@@ -215,17 +223,39 @@ public class MainActivity extends AppCompatActivity {
 
         Imgproc.cvtColor(originalMat, grayMat, Imgproc.COLOR_BGR2GRAY);
 
-        Imgproc.GaussianBlur(grayMat, blur1, new Size(15, 15), 5);
-        Imgproc.GaussianBlur(grayMat, blur2, new Size(21, 21), 7);
+        Imgproc.GaussianBlur(grayMat, blur1, new Size(11, 11), 5);
+        Imgproc.GaussianBlur(grayMat, blur2, new Size(15, 15), 7);
 
         Mat DoG = new Mat();
         Core.absdiff(blur1, blur2, DoG);
 
         Core.multiply(DoG, new Scalar(100), DoG);
-        Imgproc.threshold(DoG, DoG, 100, 255, Imgproc.THRESH_BINARY_INV);
+        //Imgproc.threshold(DoG, DoG, 100, 255, Imgproc.THRESH_BINARY_INV);
+        double threshold = Imgproc.threshold(DoG, DoG, 0, 255, Imgproc.THRESH_OTSU);
+        TextView tv1 = (TextView) findViewById(R.id.textView1);
+        tv1.setText("Threshold value = " + threshold);
 
-        Utils.matToBitmap(DoG, currentBitmap);
+        List<MatOfPoint> contourListTemp = new ArrayList<>();
+        Mat hierarchy = new Mat();
+        Imgproc.findContours(DoG, contourListTemp, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        for (int idx = 0; idx >= 0; idx = (int) hierarchy.get(0, idx)[0]) {
+            MatOfPoint matOfPoint = contourListTemp.get(idx);
+            Rect rect = Imgproc.boundingRect(matOfPoint);
+            Imgproc.rectangle(originalMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(100));
+        }
+
+        Bitmap processedBitmap = Bitmap.createBitmap(currentBitmap.getWidth(), currentBitmap.getHeight(), currentBitmap.getConfig());
+        Utils.matToBitmap(DoG, processedBitmap);
         processedView.setImageBitmap(processedBitmap);
+
+        Bitmap processedBitmap1 = Bitmap.createBitmap(currentBitmap.getWidth(), currentBitmap.getHeight(), currentBitmap.getConfig());
+        Utils.matToBitmap(blur1, processedBitmap1);
+        dogView1.setImageBitmap(processedBitmap1);
+
+        Bitmap processedBitmap2 = Bitmap.createBitmap(currentBitmap.getWidth(), currentBitmap.getHeight(), currentBitmap.getConfig());
+        Utils.matToBitmap(blur2, processedBitmap2);
+        dogView2.setImageBitmap(processedBitmap2);
     }
 
 }

@@ -5,5 +5,5 @@
         android:orderInCategory="100" app:showAsAction="never" />
 
     <item android:id="@+id/DoG" android:title="@string/DoG"
-        android:orderInCategory="100" app:ShowAsAction="never" />
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>
