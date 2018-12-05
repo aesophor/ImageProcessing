@@ -117,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
             dogView2 = (ImageView) findViewById(R.id.dogImage2);
             processedView = (ImageView) findViewById(R.id.processedImage);
             differenceOfGaussian();
+        } else if (id == R.id.CannyEdges) {
+            processedView = (ImageView) findViewById(R.id.processedImage);
+            canny();
         }
 
         return super.onOptionsItemSelected(item);
@@ -256,6 +259,20 @@ public class MainActivity extends AppCompatActivity {
         Bitmap processedBitmap2 = Bitmap.createBitmap(currentBitmap.getWidth(), currentBitmap.getHeight(), currentBitmap.getConfig());
         Utils.matToBitmap(blur2, processedBitmap2);
         dogView2.setImageBitmap(processedBitmap2);
+    }
+
+    public void canny() {
+        Mat grayMat = new Mat();
+        Mat cannyEdges = new Mat();
+
+        Imgproc.cvtColor(originalMat, grayMat, Imgproc.COLOR_BGR2GRAY);
+
+        Imgproc.Canny(grayMat, cannyEdges, 20, 70);
+
+        processedBitmap = Bitmap.createBitmap(currentBitmap.getWidth(), currentBitmap.getHeight(), currentBitmap.getConfig());
+
+        Utils.matToBitmap(cannyEdges, processedBitmap);
+        processedView.setImageBitmap(processedBitmap);
     }
 
 }
