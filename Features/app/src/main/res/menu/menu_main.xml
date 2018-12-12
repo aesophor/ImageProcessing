@@ -8,4 +8,8 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/CannyEdges" android:title="@string/CannyEdges"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/SobelFilter" android:title="@string/SobelFilter"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/HarrisCorners" android:title="@string/HarrisCorners"
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>
