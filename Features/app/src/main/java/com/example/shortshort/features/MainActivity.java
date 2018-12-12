@@ -135,6 +135,14 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.HarrisCorners) {
             processedView = (ImageView) findViewById(R.id.processedImage);
             HarrisCorner();
+        } else if (id == R.id.HoughLines) {
+            dogView1 = (ImageView) findViewById(R.id.dogImage1);
+            processedView = (ImageView) findViewById(R.id.processedImage);
+            HoughLines();
+        } else if (id == R.id.HoughCircles) {
+            dogView1 = (ImageView) findViewById(R.id.dogImage1);
+            processedView = (ImageView) findViewById(R.id.processedImage);
+            HoughCircles();
         }
 
         return super.onOptionsItemSelected(item);
@@ -354,6 +362,60 @@ public class MainActivity extends AppCompatActivity {
                     Imgproc.circle(originalMat, new Point(i, j), 2, new Scalar(255, 0, 0, 255), 1, 8, 0);
                 }
             }
+        }
+
+        Bitmap processedImage = Bitmap.createBitmap(originalMat.cols(), originalMat.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(originalMat, processedImage);
+        processedView.setImageBitmap(processedImage);
+    }
+
+    public void HoughLines() {
+        Mat grayMat = new Mat();
+        Mat cannyEdges = new Mat();
+        Mat lines = new Mat();
+        Imgproc.cvtColor(originalMat, grayMat, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.Canny(grayMat, cannyEdges, 20, 70);
+        Imgproc.HoughLinesP(cannyEdges, lines, 1, Math.PI / 180, 50, 40, 10);
+        Mat houghLines = new Mat();
+        houghLines.create(cannyEdges.rows(), cannyEdges.cols(), CvType.CV_8UC1);
+
+        for (int i = 0; i < lines.rows(); i++) {
+            double[] points = lines.get(i, 0);
+            double x1, y1, x2, y2;
+            x1 = points[0];
+            y1 = points[1];
+            x2 = points[2];
+            y2 = points[3];
+            Point pt1 = new Point(x1, y1);
+            Point pt2 = new Point(x2, y2);
+            Imgproc.line(originalMat, pt1, pt2, new Scalar(255, 0, 0, 255), 2);
+        }
+        Bitmap processedImage = Bitmap.createBitmap(originalMat.cols(), originalMat.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(originalMat, processedImage);
+        processedView.setImageBitmap(processedImage);
+    }
+
+    public void HoughCircles() {
+        Mat grayMat = new Mat();
+        Mat cannyEdges = new Mat();
+        Mat circles = new Mat();
+        Imgproc.cvtColor(originalMat, grayMat, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.medianBlur(grayMat, grayMat, 5);
+        Imgproc.HoughCircles(grayMat, circles, Imgproc.HOUGH_GRADIENT, 1.0,
+                (double) grayMat.rows() / 16, 100.0, 30.0, 1, 45);
+        Mat houghCircles = new Mat();
+        houghCircles.create(cannyEdges.rows(), cannyEdges.cols(), CvType.CV_8UC1);
+
+        for (int i = 0; i < circles.cols(); i++) {
+            double[] parameters = circles.get(0, i);
+            double x, y;
+            int r;
+            x = parameters[0];
+            y = parameters[1];
+            r = (int) parameters[2];
+            Point center = new Point(x, y);
+            Imgproc.circle(originalMat, center, r, new Scalar(255, 0, 255, 255), 2);
+            Imgproc.circle(originalMat, center, 1, new Scalar(0, 0, 255, 255), 2);
         }
 
         Bitmap processedImage = Bitmap.createBitmap(originalMat.cols(), originalMat.rows(), Bitmap.Config.ARGB_8888);
