@@ -7,4 +7,5 @@
     <string name="HarrisCorners">Harris Corners</string>
     <string name="HoughLines">Hough Lines</string>
     <string name="HoughCircles">Hough Circles</string>
+    <string name="Contours">Contours</string>
 </resources>

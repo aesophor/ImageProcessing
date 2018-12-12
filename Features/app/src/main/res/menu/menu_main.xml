@@ -16,4 +16,6 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/HoughCircles" android:title="@string/HoughCircles"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/Contours" android:title="@string/Contours"
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>

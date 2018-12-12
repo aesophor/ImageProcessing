@@ -143,6 +143,10 @@ public class MainActivity extends AppCompatActivity {
             dogView1 = (ImageView) findViewById(R.id.dogImage1);
             processedView = (ImageView) findViewById(R.id.processedImage);
             HoughCircles();
+        } else if (id == R.id.Contours) {
+            dogView1 = (ImageView) findViewById(R.id.dogImage1);
+            processedView = (ImageView) findViewById(R.id.processedImage);
+            Contours();
         }
 
         return super.onOptionsItemSelected(item);
@@ -418,6 +422,27 @@ public class MainActivity extends AppCompatActivity {
             Imgproc.circle(originalMat, center, 1, new Scalar(0, 0, 255, 255), 2);
         }
 
+        Bitmap processedImage = Bitmap.createBitmap(originalMat.cols(), originalMat.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(originalMat, processedImage);
+        processedView.setImageBitmap(processedImage);
+    }
+
+    public void Contours() {
+        Mat grayMat = new Mat();
+        Mat cannyEdges = new Mat();
+        Mat hierarchy = new Mat();
+        List<MatOfPoint> contourList = new ArrayList<>();
+
+        Imgproc.cvtColor(originalMat, grayMat, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.Canny(originalMat, cannyEdges, 20, 70);
+        Imgproc.findContours(cannyEdges, contourList, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        Mat contours = new Mat();
+        contours.create(cannyEdges.rows(), cannyEdges.cols(), CvType.CV_8UC3);
+        Random r = new Random();
+        for (int i = 0; i < contourList.size(); i ++) {
+            Imgproc.drawContours(originalMat, contourList, i, new Scalar(r.nextInt(255), r.nextInt(255), r.nextInt(255), 255));
+        }
         Bitmap processedImage = Bitmap.createBitmap(originalMat.cols(), originalMat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(originalMat, processedImage);
         processedView.setImageBitmap(processedImage);
