@@ -441,7 +441,7 @@ public class MainActivity extends AppCompatActivity {
         contours.create(cannyEdges.rows(), cannyEdges.cols(), CvType.CV_8UC3);
         Random r = new Random();
         for (int i = 0; i < contourList.size(); i ++) {
-            Imgproc.drawContours(originalMat, contourList, i, new Scalar(r.nextInt(255), r.nextInt(255), r.nextInt(255), 255));
+            Imgproc.drawContours(originalMat, contourList, i, new Scalar(r.nextInt(255), r.nextInt(255), r.nextInt(255), 255), 2);
         }
         Bitmap processedImage = Bitmap.createBitmap(originalMat.cols(), originalMat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(originalMat, processedImage);
