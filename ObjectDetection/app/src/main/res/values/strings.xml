@@ -3,4 +3,9 @@
 
     <string name="action_load_first_image">Load First Image</string>
     <string name="action_load_second_image">Load Second Image</string>
+
+    <string name="result_target_1">Object1: %1$d</string>
+    <string name="result_target_2">Object2: %2$d</string>
+    <string name="result_target_matches">KeyPoint Match: %1$d</string>
+    <string name="result_time_cost">Execute Time: %1$d ms</string>
 </resources>
