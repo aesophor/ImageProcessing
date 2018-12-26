@@ -12,4 +12,28 @@
         android:id="@+id/sift"
         android:text="SIFT"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/surf"
+        android:text="SURF"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bOrb"
+        android:text="ORB"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bBrisk"
+        android:text="Brisk"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bFreak"
+        android:text="Freak"/>
+
 </LinearLayout>

@@ -219,6 +219,26 @@ public class MainActivity extends AppCompatActivity {
                 descriptorExtractor = DescriptorExtractor.create(DescriptorExtractor.SIFT);
                 descriptorMatcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_SL2);
                 break;
+            case HomeActivity.MODE_SURF:
+                detector = FeatureDetector.create(FeatureDetector.SURF);
+                descriptorExtractor = DescriptorExtractor.create(DescriptorExtractor.SURF);
+                descriptorMatcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_SL2);
+                break;
+            case HomeActivity.MODE_ORB:
+                detector = FeatureDetector.create(FeatureDetector.ORB);
+                descriptorExtractor = DescriptorExtractor.create(DescriptorExtractor.ORB);
+                descriptorMatcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
+                break;
+            case HomeActivity.MODE_BRISK:
+                detector = FeatureDetector.create(FeatureDetector.BRISK);
+                descriptorExtractor = DescriptorExtractor.create(DescriptorExtractor.BRISK);
+                descriptorMatcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
+                break;
+            case HomeActivity.MODE_FREAK:
+                detector = FeatureDetector.create(FeatureDetector.FAST);
+                descriptorExtractor = DescriptorExtractor.create(DescriptorExtractor.FREAK);
+                descriptorMatcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
+                break;
             default:
                 detector = FeatureDetector.create(FeatureDetector.FAST);
                 descriptorExtractor = DescriptorExtractor.create(DescriptorExtractor.BRIEF);
